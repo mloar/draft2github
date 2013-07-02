@@ -23,7 +23,7 @@ See `settings.json`.
 
 ## License
 
-Copyright (c) 2009 Matt Loar <[matt.loar.name](http://matt.loar.name/)\>
+Copyright (c) 2009 Matt Loar.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to

@@ -1,10 +1,18 @@
 {
     "name": "draft2github",
     "description": "WebHook for Posting to GitHub Pages from Draft",
-    "version": "0.1.0",
-    "author": "Matt Loar",
-    "email": "matt@loar.name",
+    "version": "0.1.1",
+    "author": {
+        "name": "Matt Loar",
+        "email": "matt@loar.name",
+        "url": "http://matt.loar.name"
+    },
     "main": "./app",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/mloar/draft2github.git"
+    },
     "dependencies": {
         "bogart": "0.3.x",
         "github3": "1.0.x"
