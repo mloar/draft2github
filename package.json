@@ -1,5 +1,5 @@
 {
-    "name": "draft-to-github",
+    "name": "draft2github",
     "description": "WebHook for Posting to GitHub Pages from Draft",
     "version": "0.1.0",
     "author": "Matt Loar",
