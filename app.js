@@ -2,13 +2,13 @@ var bogart  = require('bogart');
 
 var getPostPath = function (draft_data) {
     return new Date(draft_data.created_at).toISOString().substr(0, 10) + '-' + draft_data.name.replace(/ /g,
-    '-').replace(/[\/\\%&?]/g, '').toLowerCase();
+    '-').replace(/[\/\\%&?:]/g, '').toLowerCase();
 };
 
 var getContentForPost = function (draft_data) {
     return "--- \n" +
         "layout: post\n" +
-        "title: " + draft_data.name + "\n" +
+        "title: \"" + draft_data.name + "\"\n" +
         "date: " + draft_data.updated_at +"\n" +
         "---\n\n" +
         draft_data.content;
