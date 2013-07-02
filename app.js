@@ -6,7 +6,7 @@ var getPostPath = function (draft_data) {
 };
 
 var getContentForPost = function (draft_data) {
-    return "--- \n" +
+    return "---\n" +
         "layout: post\n" +
         "title: \"" + draft_data.name + "\"\n" +
         "date: " + draft_data.updated_at +"\n" +
