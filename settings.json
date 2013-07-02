@@ -1,0 +1,6 @@
+{
+    "access_token": "Go to https://github.com/settings/applications to generate a Personal API Access Token",
+    "user_name": "Your GitHub Username",
+    "repo_name": "Repository name, i.e. user.github.com or my-software-project",
+    "branch": "'master' for user/org pages, 'gh-pages' for project pages"
+}
