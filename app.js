@@ -1,15 +1,20 @@
 var bogart  = require('bogart');
 
 var getPostPath = function (draft_data) {
-    return new Date(draft_data.created_at).toISOString().substr(0, 10) + '-' + draft_data.name.replace(/ /g,
-    '-').replace(/[\/\\%&?:]/g, '').toLowerCase();
+    return new Date(draft_data.created_at).toISOString().substr(0, 10) + '-'
+        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?:]/g, '').toLowerCase();
+};
+
+var getPostUrl = function (draft_data) {
+    return new Date(draft_data.created_at).toISOString().substr(0, 10).replace(/-/g, '/') + '/'
+        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?:]/g, '').toLowerCase() + '.html';
 };
 
 var getContentForPost = function (draft_data) {
     return "---\n" +
         "layout: post\n" +
         "title: \"" + draft_data.name + "\"\n" +
-        "date: " + draft_data.updated_at +"\n" +
+        "date: " + draft_data.created_at +"\n" +
         "---\n\n" +
         draft_data.content;
 };
@@ -43,7 +48,7 @@ var newGitHubPagesPost = function (draft_data) {
             status: 200,
             body: [str],
             headers: {
-                "Location": "http://" + settings.repo_name + "/" + getPostPath(draft_data),
+                "Location": "http://" + settings.repo_name + "/" + getPostUrl(draft_data),
                 "Content-Type": "application/json",
                 "Content-Length": Buffer.byteLength(str, "utf-8")
             }
