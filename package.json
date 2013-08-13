@@ -20,5 +20,8 @@
     "engines": {
         "node": "0.8.x",
         "npm": "1.1.x"
+    },
+    "devDependencies": {
+        "vows": "~0.7.0"
     }
 }
