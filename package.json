@@ -1,7 +1,7 @@
 {
     "name": "draft2github",
     "description": "WebHook for Posting to GitHub Pages from Draft",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "author": {
         "name": "Matt Loar",
         "email": "matt@loar.name",
