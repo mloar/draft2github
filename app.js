@@ -31,11 +31,13 @@ var newGitHubPagesPost = function (draft_data) {
     var updateRefHead= bogart.promisify(gh.updateRefHead, gh);
     var createCommit= bogart.promisify(gh.createCommit, gh);
     var last_commit;
+    var old_tree;
 
     return getRef(settings.repo_name, settings.user_name, settings.branch).then(function (ref) {
         last_commit = ref.object.sha;
         return getTree(settings.repo_name, settings.user_name, ref.object.sha);
     }).then(function (oldTree) {
+        old_tree = oldTree;
         var post_date = new Date(draft_data.created_at);
         return createBlob(settings.repo_name, settings.user_name, getContentForPost(draft_data)).then(function (blob) {
             return createTreeWithBlob(settings.repo_name, settings.user_name,
@@ -48,15 +50,26 @@ var newGitHubPagesPost = function (draft_data) {
         return updateRefHead(settings.repo_name, settings.user_name, settings.branch, commit.sha, false);
     }).then(function (result) {
         var str = JSON.stringify(result);
-        return {
-            status: 200,
-            body: [str],
-            headers: {
-                "Location": "http://" + settings.repo_name + "/" + getPostUrl(draft_data),
-                "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(str, "utf-8")
-            }
+        var returning = function (host_name) {
+            return {
+                status: 200,
+                body: [str],
+                headers: {
+                    "Location": "http://" + host_name + "/" + getPostUrl(draft_data),
+                    "Content-Type": "application/json",
+                    "Content-Length": Buffer.byteLength(str, "utf-8")
+                }
+            };
         };
+
+        var cname_item = old_tree.tree.filter(function (item) { return item.path == 'CNAME'; } );
+        if (cname_item.length == 1) {
+            return getBlobText(settings.repo_name, settings.user_name, cname_item[0].sha).then(function (data) {
+                return returning(data.content.trim());
+            });
+        } else {
+            return returning(settings.repo_name);
+        }
     });
 };
 
