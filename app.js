@@ -2,12 +2,12 @@ var bogart  = require('bogart');
 
 var getPostPath = function (draft_data) {
     return new Date(draft_data.created_at).toISOString().substr(0, 10) + '-'
-        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?:]/g, '').toLowerCase();
+        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?@'":]/g, '').toLowerCase();
 };
 
 var getPostUrl = function (draft_data) {
     return new Date(draft_data.created_at).toISOString().substr(0, 10).replace(/-/g, '/') + '/'
-        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?:]/g, '').toLowerCase() + '.html';
+        + draft_data.name.replace(/ /g, '-').replace(/[\/\\%&?@'":]/g, '').toLowerCase() + '.html';
 };
 
 var getContentForPost = function (draft_data) {
