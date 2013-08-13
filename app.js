@@ -11,12 +11,12 @@ var getPostUrl = function (draft_data) {
 };
 
 var getContentForPost = function (draft_data) {
-    return "---\n" +
+    return new Buffer("---\n" +
         "layout: post\n" +
         "title: \"" + draft_data.name + "\"\n" +
         "date: " + draft_data.created_at +"\n" +
         "---\n\n" +
-        draft_data.content;
+        draft_data.content, 'utf8');
 };
 
 var newGitHubPagesPost = function (draft_data) {
@@ -25,6 +25,8 @@ var newGitHubPagesPost = function (draft_data) {
     gh.setAccessToken(settings.access_token);
     var getRef = bogart.promisify(gh.getLastCommitRef, gh);
     var getTree= bogart.promisify(gh.getTree, gh);
+    var createBlob = bogart.promisify(gh.createBlob, gh);
+    var createTreeWithBlob = bogart.promisify(gh.createTreeWithBlob, gh);
     var createTreeAndAddFile= bogart.promisify(gh.createTreeAndAddFile, gh);
     var updateRefHead= bogart.promisify(gh.updateRefHead, gh);
     var createCommit= bogart.promisify(gh.createCommit, gh);
@@ -35,11 +37,13 @@ var newGitHubPagesPost = function (draft_data) {
         return getTree(settings.repo_name, settings.user_name, ref.object.sha);
     }).then(function (oldTree) {
         var post_date = new Date(draft_data.created_at);
-        return createTreeAndAddFile(settings.repo_name, settings.user_name, '_posts/' + getPostPath(draft_data) + '.markdown',
-        getContentForPost(draft_data), oldTree.sha).then(function (newTree) {
-            return createCommit(settings.repo_name, settings.user_name, "New post from Draft", newTree.sha, last_commit,
-                {'email': draft_data.user.email, 'date': new Date().toISOString()});
-        });
+        return createBlob(settings.repo_name, settings.user_name, getContentForPost(draft_data)).then(function (blob) {
+            return createTreeWithBlob(settings.repo_name, settings.user_name,
+                '_posts/' + getPostPath(draft_data) + '.markdown', blob.sha, oldTree.sha);
+            });
+    }).then(function (newTree) {
+        return createCommit(settings.repo_name, settings.user_name, "New post from Draft", newTree.sha, last_commit,
+            {'email': draft_data.user.email, 'date': new Date().toISOString()});
     }).then(function (commit) {
         return updateRefHead(settings.repo_name, settings.user_name, settings.branch, commit.sha, false);
     }).then(function (result) {

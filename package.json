@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "bogart": "0.3.x",
-        "github3": "1.0.x"
+        "github3": "~1.2.x"
     },
     "engines": {
         "node": "0.8.x",
