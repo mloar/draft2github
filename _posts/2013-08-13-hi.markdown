@@ -1,0 +1,7 @@
+---
+layout: post
+title: "Hi"
+date: Tue Aug 13 2013 07:47:31 GMT+0000 (UTC)
+---
+
+Hello, world!
